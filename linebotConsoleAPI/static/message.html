@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>發送訊息到後端</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>發送訊息</h1>
+    <form id="messageForm">
+        <input type="text" id="sender" name="sender" placeholder="輸入發送者" required><br>
+        <textarea id="message" name="message" placeholder="輸入訊息" rows="4" required></textarea><br>
+        <input type="datetime-local" id="pushTime" name="pushTime" placeholder="選擇推送時間" required><br>
+        <select id="immediately" name="immediately" required>
+            <option value="">選擇是否立即推送</option>
+            <option value="true">是</option>
+            <option value="false">否</option>
+        </select><br>
+        <button type="submit">發送訊息</button>
+    </form>
+    <p id="responseMessage"></p>
+</div>
+
+<script>
+    document.getElementById('messageForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // 防止頁面重新加載
+
+        const sender = document.getElementById('sender').value;
+        const message = document.getElementById('message').value;
+        const pushTime = document.getElementById('pushTime').value;
+        const immediately = document.getElementById('immediately').value === 'true'; // 將 'true' 或 'false' 轉換為布林值
+
+        // 發送POST請求到後端
+        const response = await fetch('/send-message/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: sender,
+                message: message,
+                pushTime: pushTime,
+                immediately: immediately
+            })
+        });
+
+        // 解析後端回傳的JSON結果
+        const result = await response.json();
+        document.getElementById('responseMessage').innerText = result.message;
+    });
+</script>
+
+</body>
+</html>

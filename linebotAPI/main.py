@@ -174,6 +174,24 @@ def handle_message(event):
             FlexSendMessage(alt_text="本週讀書會預告", contents=text)
         )
 
+@app.post("/linebot")
+async def send_to_line(request: Request):
+    data = await request.json()
+    data = data.get("data")
+    # sender = data.get('sender')
+    message = data.get('message')
+    print(message)
+
+    # 群組 ID (填入你的群組 ID)
+    group_id = 'C1df9decc209425fc5340d43400b48f91'
+
+    try:
+        # 將訊息發送到 Line 群組
+        line_bot_api.push_message(group_id, TextSendMessage(text=message))
+        return {"status": "success", "message": "訊息已發送到 Line 群組"}
+    except Exception as e:
+        return {"status": "error", "message": f"發送到 Line 群組時出錯: {e}"}
+
 
 if __name__ == "__main__":
     import uvicorn
