@@ -11,8 +11,9 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendM
 app = FastAPI()
 
 # 替換成你的 LINE Bot 資訊
-line_bot_api = LineBotApi('Ra3o/7sMnHqPpdmRF91FFS7mqHLALhENQiKLExunQFHK1rNGvET8x29hU+jR//9m/4ksOa4lSRrd67A5zDSHBybARp271lmbIwVNVZcmErSBJKqZ8s+zjA8vVonhQM27rN5aVw7mxdQ12arpkNhUaQdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('e70229e114eeac0f035dc81a0680a0f4')
+import os
+line_bot_api = LineBotApi(os.environ["LINE_CHANNEL_ACCESS_TOKEN"])
+handler = WebhookHandler(os.environ["LINE_CHANNEL_SECRET"])
 
 # # 定義發送定期訊息的函數
 # def send_scheduled_message():
