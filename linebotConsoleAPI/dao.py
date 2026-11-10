@@ -2,7 +2,8 @@ from datetime import datetime
 import certifi
 from pymongo import MongoClient
 
-uri = "mongodb+srv://willy870417:magenga@cluster0.chx5i.mongodb.net/test?retryWrites=true&w=majority&ssl=true&tlsAllowInvalidCertificates=true"
+import os
+uri = os.environ["MONGODB_URI"]  # 連線字串改由環境變數提供，勿寫死在程式碼
 
 # Create a new client and connect to the server
 client = MongoClient(uri)
